@@ -1,4 +1,4 @@
-###########server.py###############
+###########pythoncode.py###############
 import numpy as np
 import sys, os
 from fastapi import FastAPI, UploadFile, File
@@ -11,27 +11,18 @@ from pydantic import BaseModel
 
 
 def read_img(img):
-    # Deploy
     pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
-
-    # Local
-    # pytesseract.pytesseract.tesseract_cmd = '/opt/homebrew/Cellar/tesseract/4.1.1/bin/tesseract'
-
-    # Window
     # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-    text = pytesseract.image_to_string(img, lang="kor")
-    return (text)
-
-
+    text = pytesseract.image_to_string(img)
+    return(text)
+ 
 app = FastAPI()
-
 
 class ImageType(BaseModel):
     url: str
 
-
-@app.post("/predict/")
-def prediction(request: Request, file: bytes = File(...)):
+@app.post("/predict/") 
+def prediction(request :Request, file: bytes = File(...)):
     if request.method == "POST":
         image_stream = io.BytesIO(file)
         image_stream.seek(0)
